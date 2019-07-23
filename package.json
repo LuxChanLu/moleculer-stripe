@@ -1,0 +1,49 @@
+{
+  "name": "moleculer-stripe",
+  "version": "0.0.1",
+  "description": "Moleculer service for stripe",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "eslint --ext=.js src test index.js",
+    "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YourSoftRun/moleculer-stripe.git"
+  },
+  "keywords": [
+    "moleculer",
+    "stripe"
+  ],
+  "author": "Hugo Meyronneinc <hugo@yoursoft.run>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YourSoftRun/moleculer-stripe/issues"
+  },
+  "homepage": "https://github.com/YourSoftRun/moleculer-stripe#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "engines": {
+    "node": ">= 8.x.x"
+  },
+  "dependencies": {
+    "stripe": "^7.4.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.4.1",
+    "jest": "^24.7.1",
+    "jest-cli": "^24.7.1",
+    "moleculer": "^0.13.8"
+  }
+}
