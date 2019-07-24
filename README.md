@@ -11,19 +11,35 @@
 
 ## What in this package ?
 
-| Product        | Compatible |
-|----------------|------------|
-| Checkout       |            |
+Ready for new PSD2 EU reglementations (SCA)
+
+| Product                                                                                         | Implemented                                               | SCA                                                                         |
+|-------------------------------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------------------------------|
+| [Payments](https://stripe.com/docs/payments)                                                    |                                                           |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Checkout](https://stripe.com/docs/payments/checkout)                   | <div style="text-align: center;">:heavy_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Charges](https://stripe.com/docs/charges)                              | <div style="text-align: center;">:white_check_mark:</div> | <div style="text-align: center;">:x:</div> (Use Checkout or PaymentIntents) |
+| &nbsp;&nbsp;&nbsp;&nbsp;[PaymentIntents](https://stripe.com/docs/payments/payment-intents)      | <div style="text-align: center;">:heavy_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
+| [Billing](https://stripe.com/docs/billing)                                                      |                                                           |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Subscriptions](https://stripe.com/docs/billing/subscriptions/creating) | <div style="text-align: center;">:white_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Invoices](https://stripe.com/docs/billing/invoices/workflow)           | <div style="text-align: center;">:white_check_mark:</div> |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Taxes](https://stripe.com/docs/billing/taxes/tax-rates)                | <div style="text-align: center;">:white_check_mark:</div> |                                                                             |
+| [Connect](https://stripe.com/docs/connect)                                                      | <div style="text-align: center;">:heavy_check_mark:</div> |                                                                             |
+| [Issuing](https://stripe.com/docs/issuing)                                                      | <div style="text-align: center;">:x:</div>                |                                                                             |
+| [Terminal](https://stripe.com/docs/terminal)                                                    | <div style="text-align: center;">:x:</div>                |                                                                             |
+| [Webhooks](https://stripe.com/docs/webhooks) - With signature check                             | <div style="text-align: center;">:heavy_check_mark:</div> |                                                                             |
 
 ## How to use it
 ```js
 const StripeMixin = require('moleculer-stripe')
 
 module.exports = {
+  name: 'stripe',
   mixins: [StripeMixin],
   settings: {
     stripe: {
-
+      secret: '',
+      public: '',
+      webhook: ''
     }
   }
 }

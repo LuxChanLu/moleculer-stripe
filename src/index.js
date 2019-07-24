@@ -6,115 +6,80 @@
 
 'use strict'
 
-const Sentry = require('@sentry/node')
-const SentryUtils = require('@sentry/utils')
+const { MoleculerError } 	= require('moleculer').Errors
+const Validator = require('fastest-validator')
+const Stripe = require('stripe')
+
+const Webhook = require('./webhook.js')
+const Connect = require('./connect.js')
+
+const PaymentCheckout = require('./payments/checkout.js')
+const PaymentIntents = require('./payments/intents.js')
+
+const StripeCheck = (new Validator()).compile({
+  secret: 'string',
+  public: 'string',
+  webhook: {
+    type: 'object',
+    items: {
+      key: 'string',
+      call: { type: 'string', optional: true },
+      event: { type: 'string', optional: true }
+    },
+    optional: true
+  },
+  custom: { type: 'function', optional: true }
+})
 
 module.exports = {
-  name: 'sentry',
-
-  /**
-	 * Default settings
-	 */
+  mixins: [Webhook, Connect, PaymentCheckout, PaymentIntents],
   settings: {
-    /** @type {String} DSN given by sentry. */
-    dsn: null,
-    /** @type {Object?} Additional options for `Sentry.init` */
-    options: {},
-    /** @type {Object?} Options for the sentry scope */
-    scope: {
-      /** @type {String?} Name of the meta containing user infos */
-      user: null
+    stripe: {
+      secret: undefined,
+      public: undefined,
+      webhook: {
+        key: undefined,
+        call: undefined,
+        event: undefined
+      },
+      telemetry: true,
+      custom: undefined
     }
   },
-
-  /**
-	 * Events
-	 */
-  events: {
-    'metrics.trace.span.finish'(metric) {
-      if (metric.error && this.isSentryReady() && (!this.shouldReport || this.shouldReport(metric) == true)) {
-        this.sendError(metric)
-      }
+  hooks: {
+    before: {
+      '*': 'stripe'
     }
   },
-
-  /**
-	 * Methods
-	 */
   methods: {
-    /**
-		 * Get service name from metric event (Imported from moleculer-jaeger)
-		 *
-		 * @param {Object} metric
-		 * @returns {String}
-		 */
-    getServiceName(metric) {
-      if (!metric.service && metric.action) {
-        const parts = metric.action.name.split('.')
-        parts.pop()
-        return parts.join('.')
+    config(ctx = {}) {
+      const meta = (ctx.meta || {}).stripe || {}
+      const config = { ...this.settings.stripe, ...meta, webhook: { ...this.settings.stripe.webhook, ...(meta.webhook || {}) } }
+      const validate = StripeCheck(config)
+      if (validate === true) {
+        return config
       }
-      return metric.service && metric.service.name ? metric.service.name : metric.service
+      throw new MoleculerError('Stripe unrecognized configuration', validate)
     },
-
-    /**
-		 * Get span name from metric event. By default it returns the action name (Imported from moleculer-jaeger)
-		 *
-		 * @param {Object} metric
-		 * @returns  {String}
-		 */
-    getSpanName(metric) {
-      return metric.action ? metric.action.name : metric.name
-    },
-
-    /**
-		 * Send error to sentry, based on the metric error
-		 *
-		 * @param {Object} metric
-		 */
-    sendError(metric) {
-      Sentry.withScope(scope => {
-        scope.setTag('id', metric.requestID)
-        scope.setTag('service', this.getServiceName(metric))
-        scope.setTag('span', this.getSpanName(metric))
-        scope.setTag('type', metric.error.type)
-        scope.setTag('code', metric.error.code)
-
-        if (metric.error.data) {
-          scope.setExtra('data', metric.error.data)
-        }
-
-        if (metric.error.meta && this.settings.meta) {
-          scope.setExtra('meta', metric.error.meta)
-        }
-
-        if (this.settings.scope && this.settings.scope.user && metric.meta && metric.meta[this.settings.scope.user]) {
-          scope.setUser(metric.meta[this.settings.scope.user])
-        }
-
-        Sentry.captureEvent({
-          message: metric.error.message,
-          stacktrace: !Array.isArray(metric.error.stack) ? [metric.error.stack] : metric.error.stack
-        })
-      })
-    },
-
-    /**
-		 * Check if sentry is configured or not
-		 */
-    isSentryReady() {
-      return Sentry.getCurrentHub().getClient() !== undefined
+    stripe(ctx = {}) {
+      const { secret, telemetry, custom } = this.config(ctx)
+      ctx.stripe = Stripe(secret)
+      ctx.stripe.setTelemetryEnabled(telemetry)
+      if (custom) {
+        ctx.stripe = custom(ctx.stripe) || ctx.stripe
+      }
+      return ctx.stripe
     }
   },
-  started() {
-    if (this.settings.dsn) {
-      Sentry.init({ dsn: this.settings.dsn, ...this.settings.options })
-    }
+  StripeDecorator(_, _1, req) {
+    req.$params.signature = req.headers['stripe-signature']
+    req.$params.body = req.body
   },
-  async stopped() {
-    if (this.isSentryReady()) {
-      await Sentry.flush()
-      SentryUtils.getGlobalObject().__SENTRY__ = undefined
+  StripeRoute(path = 'stripe', service = 'stripe') {
+    return {
+      bodyParsers: { json: false, text: { type: 'application/json' } },
+      aliases: { [`POST ${path}`]: `${service}.webhook` },
+      onBeforeCall: module.exports.StripeDecorator
     }
   }
 }
