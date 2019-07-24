@@ -1,3 +1,11 @@
+/*
+ * moleculer-stripe
+ * Copyright (c) 2019 YourSoft.run (https://github.com/YourSoftRun/moleculer-stripe)
+ * MIT Licensed
+ */
+
+'use strict'
+
 const StripeService = require('../../index.js')
 
 module.exports = {
@@ -8,7 +16,7 @@ module.exports = {
       public: 'pk_publickey',
       webhook: {
         key: 'whsec_sigkey',
-        call: 'stripe.webhook.action',
+        action: 'stripe.webhook.action',
         event: 'stripe.webhook.event'
       }
     }
@@ -29,7 +37,7 @@ module.exports = {
   },
   methods: {
     mockWebhookHandler() {
-      this.settings.stripe.webhook.call = 'stripe.webhook.action'
+      this.settings.stripe.webhook.action = 'stripe.webhook.action'
       this.settings.stripe.webhook.event = 'stripe.webhook.event'
       this.webhook = { action: jest.fn(), event: jest.fn() }
     }

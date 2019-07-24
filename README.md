@@ -1,4 +1,4 @@
-# moleculer-stripe
+# moleculer-stripe (/!\ WIP do not use in any kind of production (Even 'little' one) /!\)
 
 [![Build Status](https://travis-ci.org/YourSoftRun/moleculer-stripe.svg?branch=master)](https://travis-ci.org/YourSoftRun/moleculer-stripe)
 [![Coverage Status](https://coveralls.io/repos/github/YourSoftRun/moleculer-stripe/badge.svg?branch=master)](https://coveralls.io/github/YourSoftRun/moleculer-stripe?branch=master)
@@ -39,8 +39,38 @@ module.exports = {
     stripe: {
       secret: '',
       public: '',
-      webhook: ''
+      webhook: {
+        key: '',
+        action: '',
+        event: ''
+      }
     }
   }
 }
 ```
+
+## How to integrate with `moleculer-web`
+Declare your stripe service like above :
+```js
+const StripeMixin = require('moleculer-stripe')
+
+module.exports = {
+  name: 'my.stripe.service',
+  mixins: [StripeMixin],
+  settings: { ... }
+}
+```
+And in your web service add one route with the path of your webhook and the name of the stripe service :
+```js
+const MoleculerWeb = require('moleculer-web')
+const { StripeRoute } = require('moleculer-stripe')
+
+module.exports = {
+  name: 'web',
+  mixins: [MoleculerWeb],
+  settings: {
+    routes: [StripeRoute('/webhook/stripe', 'my.stripe.service')]
+  }
+}
+```
+If you want more "Pimp my ride" options on this route, look at src/index.js#78

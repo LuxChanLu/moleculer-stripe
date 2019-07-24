@@ -23,7 +23,7 @@ const StripeCheck = (new Validator()).compile({
     type: 'object',
     items: {
       key: 'string',
-      call: { type: 'string', optional: true },
+      action: { type: 'string', optional: true },
       event: { type: 'string', optional: true }
     },
     optional: true
@@ -39,7 +39,7 @@ module.exports = {
       public: undefined,
       webhook: {
         key: undefined,
-        call: undefined,
+        action: undefined,
         event: undefined
       },
       telemetry: true,

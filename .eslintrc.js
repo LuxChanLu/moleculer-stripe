@@ -34,6 +34,9 @@ module.exports = {
     ],
     'no-mixed-spaces-and-tabs': [
       'error'
+    ],
+    'require-atomic-updates': [
+      'off'
     ]
   }
 }

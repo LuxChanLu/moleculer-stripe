@@ -1,3 +1,11 @@
+/*
+ * moleculer-stripe
+ * Copyright (c) 2019 YourSoft.run (https://github.com/YourSoftRun/moleculer-stripe)
+ * MIT Licensed
+ */
+
+'use strict'
+
 const { ServiceBroker } = require('moleculer')
 
 const StripeService = require('../__fixtures__/stripe.service.js')

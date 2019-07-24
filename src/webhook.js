@@ -13,11 +13,11 @@ module.exports = {
       async handler(ctx) {
         try {
           const { webhook } = this.config(ctx)
-          const { key, call, event } = webhook
+          const { key, action, event } = webhook
           const { body, signature } = ctx.params
           const stripeEvent = ctx.stripe.webhooks.constructEvent(body, signature, key)
-          if (call) {
-            await ctx.call(call.replace(/\{type\}/g, stripeEvent.type), stripeEvent)
+          if (action) {
+            await ctx.call(action.replace(/\{type\}/g, stripeEvent.type), stripeEvent)
           }
           if (event) {
             ctx.emit(event.replace(/\{type\}/g, stripeEvent.type), stripeEvent)

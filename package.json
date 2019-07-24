@@ -44,12 +44,12 @@
     "@types/jest": "^24.0.15",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "coveralls": "^3.0.3",
-    "eslint": "^5.16.0",
+    "coveralls": "^3.0.5",
+    "eslint": "^6.1.0",
     "moleculer-web": "^0.8.5",
-    "eslint-plugin-jest": "^22.4.1",
-    "jest": "^24.7.1",
-    "jest-cli": "^24.7.1",
-    "moleculer": "^0.13.8"
+    "eslint-plugin-jest": "^22.13.6",
+    "jest": "^24.8.0",
+    "jest-cli": "^24.8.0",
+    "moleculer": "^0.13.9"
   }
 }
