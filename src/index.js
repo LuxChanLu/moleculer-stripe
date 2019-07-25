@@ -10,18 +10,14 @@ const { MoleculerError } 	= require('moleculer').Errors
 const Validator = require('fastest-validator')
 const Stripe = require('stripe')
 
-const { CRUDL } = require('./utils.js')
+const { StripeMethods } = require('./utils.js')
 
 const Webhook = require('./webhook.js')
 const Connect = require('./connect.js')
 
-const PaymentCheckout = require('./payments/checkout.js')
-const PaymentIntents = require('./payments/intents.js')
-
 const StripeCheck = (new Validator()).compile({
   version: { type: 'string', optional: true },
   secret: 'string',
-  public: 'string',
   webhook: {
     type: 'object',
     items: {
@@ -37,29 +33,37 @@ const StripeCheck = (new Validator()).compile({
 
 module.exports = {
   mixins: [
-    CRUDL('customer'),
-    CRUDL('charge'),
-    CRUDL('checkout.session'),
-    CRUDL('paymentIntent'),
-    CRUDL('account'),
-    CRUDL('refund', { del: false }),
-    CRUDL('product'),
-    CRUDL('taxRate', { del: false }),
-    CRUDL('sku'),
-    Webhook, Connect, PaymentCheckout, PaymentIntents
+    StripeMethods('balance', { create: false, update: false, del: false, list: false }, true),
+    StripeMethods('balanceTransactions', { create: false, update: false, del: false }),
+    StripeMethods('customer'),
+    StripeMethods('charge'),
+    StripeMethods('checkout.session'),
+    StripeMethods('paymentIntent', { del: false, confirm: true, capture: true, cancel: true }),
+    StripeMethods('setupIntent', { del: false, confirm: true, cancel: true }),
+    StripeMethods('payout', { del: false, cancel: true }),
+    StripeMethods('account', { reject: true }),
+    StripeMethods('applicationFee', { create: false, update: false, del: false }),
+    StripeMethods('transfer', { del: false }),
+    StripeMethods('topup', { del: false, cancel: true }),
+    StripeMethods('countrySpecs', { create: false, update: false, del: false }),
+    StripeMethods('refund', { del: false }),
+    StripeMethods('tokens', { update: false, del: false, list: false }),
+    StripeMethods('product'),
+    StripeMethods('taxRate', { del: false }),
+    StripeMethods('sku'),
+    Webhook, Connect
   ],
+  $secureSettings: ['stripe'],
   settings: {
     stripe: {
       version: undefined,
       secret: undefined,
-      public: undefined,
       webhook: {
         key: undefined,
         action: undefined,
         event: undefined
       },
       telemetry: true,
-      account: undefined,
       custom: undefined
     }
   },
@@ -77,8 +81,8 @@ module.exports = {
       throw new MoleculerError('Stripe unrecognized configuration', validate)
     },
     stripe(ctx = {}) {
-      const { version, secret, telemetry, account, custom } = this.config(ctx)
-      ctx.stripe = Stripe(secret, { stripeAccount: account })
+      const { version, secret, telemetry, custom } = this.config(ctx)
+      ctx.stripe = Stripe(secret)
       ctx.stripe.setTelemetryEnabled(telemetry)
       if (version) {
         ctx.stripe.setApiVersion(version)

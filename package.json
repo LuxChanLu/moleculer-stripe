@@ -1,6 +1,6 @@
 {
   "name": "moleculer-stripe",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Moleculer service for stripe",
   "main": "index.js",
   "directories": {
@@ -41,7 +41,7 @@
     "decamelize": "^3.2.0",
     "fastest-validator": "^0.6.17",
     "pluralize": "^8.0.0",
-    "stripe": "^7.4.0",
+    "stripe": "^7.5.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "eslint": "^6.1.0",
     "moleculer-repl": "^0.5.7",
     "moleculer-web": "^0.8.5",
-    "eslint-plugin-jest": "^22.13.6",
+    "eslint-plugin-jest": "^22.13.7",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
     "moleculer": "^0.13.9"

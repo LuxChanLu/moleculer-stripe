@@ -13,7 +13,6 @@ module.exports = {
   settings: {
     stripe: {
       secret: 'sk_secretkey',
-      public: 'pk_publickey',
       webhook: {
         key: 'whsec_sigkey',
         action: 'stripe.webhook.action',
