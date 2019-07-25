@@ -11,7 +11,7 @@
 
 [![Downloads](https://img.shields.io/npm/dm/moleculer-stripe.svg)](https://www.npmjs.com/package/moleculer-stripe)
 
-## What in this package ?
+## Stripe product available in this service
 
 Ready for new PSD2 EU reglementations (SCA)
 
@@ -152,7 +152,6 @@ module.exports = {
   }
 }
 ```
-
 
 | Action                                   | Arguments                                      |
 |------------------------------------------|------------------------------------------------|
