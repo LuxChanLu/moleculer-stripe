@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "dev": "moleculer-runner --repl test/__fixtures__/stripe.service.js",
     "ci": "jest --watch",
     "test": "jest --coverage",
     "lint": "eslint --ext=.js src test index.js",
@@ -37,8 +38,11 @@
     "node": ">= 8.x.x"
   },
   "dependencies": {
+    "decamelize": "^3.2.0",
     "fastest-validator": "^0.6.17",
-    "stripe": "^7.4.0"
+    "pluralize": "^8.0.0",
+    "stripe": "^7.4.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",
@@ -46,6 +50,7 @@
     "request-promise-native": "^1.0.7",
     "coveralls": "^3.0.5",
     "eslint": "^6.1.0",
+    "moleculer-repl": "^0.5.7",
     "moleculer-web": "^0.8.5",
     "eslint-plugin-jest": "^22.13.6",
     "jest": "^24.8.0",

@@ -32,9 +32,6 @@ module.exports = {
       this.webhook.event(event)
     }
   },
-  created() {
-    this.mockWebhookHandler()
-  },
   methods: {
     mockWebhookHandler() {
       this.settings.stripe.webhook.action = 'stripe.webhook.action'

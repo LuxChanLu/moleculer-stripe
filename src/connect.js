@@ -7,5 +7,4 @@
 'use strict'
 
 module.exports = {
-
 }

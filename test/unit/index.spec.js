@@ -25,6 +25,13 @@ describe('Stripe configurations', () => {
     expect(() => service.config({ meta: { stripe: { secret: null } } })).toThrow()
   })
 
+  it('should config stripe with version, no telemetry and a connect account', async () => {
+    const stripe = service.stripe({ meta: { stripe: { version: '2019-05-16', telemetry: false, account: 'pk_connect_acc_id' } } })
+    expect(stripe).toBeDefined()
+    expect(stripe._api.version).toBe('2019-05-16')
+    expect(stripe._api._enableTelemetry).toBeFalsy()
+  })
+
   it('should config stripe with custom options', async () => {
     service.settings.stripe.custom = stripe => stripe.setTimeout(50000)
     const stripe = service.stripe()

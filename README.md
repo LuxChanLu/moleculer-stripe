@@ -17,12 +17,13 @@ Ready for new PSD2 EU reglementations (SCA)
 |-------------------------------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------------------------------------------------|
 | [Payments](https://stripe.com/docs/payments)                                                    |                                                           |                                                                             |
 | &nbsp;&nbsp;&nbsp;&nbsp;[Checkout](https://stripe.com/docs/payments/checkout)                   | <div style="text-align: center;">:heavy_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;[Charges](https://stripe.com/docs/charges)                              | <div style="text-align: center;">:white_check_mark:</div> | <div style="text-align: center;">:x:</div> (Use Checkout or PaymentIntents) |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Charges](https://stripe.com/docs/charges)                              | <div style="text-align: center;">:heavy_check_mark:</div> | <div style="text-align: center;">:x:</div> (Use Checkout or PaymentIntents) |
 | &nbsp;&nbsp;&nbsp;&nbsp;[PaymentIntents](https://stripe.com/docs/payments/payment-intents)      | <div style="text-align: center;">:heavy_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
 | [Billing](https://stripe.com/docs/billing)                                                      |                                                           |                                                                             |
-| &nbsp;&nbsp;&nbsp;&nbsp;[Subscriptions](https://stripe.com/docs/billing/subscriptions/creating) | <div style="text-align: center;">:white_check_mark:</div> | <div style="text-align: center;">:heavy_check_mark:</div>                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;[Invoices](https://stripe.com/docs/billing/invoices/workflow)           | <div style="text-align: center;">:white_check_mark:</div> |                                                                             |
-| &nbsp;&nbsp;&nbsp;&nbsp;[Taxes](https://stripe.com/docs/billing/taxes/tax-rates)                | <div style="text-align: center;">:white_check_mark:</div> |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Customers](https://stripe.com/docs/billing/customer)                   | <div style="text-align: center;">:heavy_check_mark:</div> |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Subscriptions](https://stripe.com/docs/billing/subscriptions/creating) |                                                           | <div style="text-align: center;">:heavy_check_mark:</div>                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Invoices](https://stripe.com/docs/billing/invoices/workflow)           |                                                           |                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;[Taxes](https://stripe.com/docs/billing/taxes/tax-rates)                |                                                           |                                                                             |
 | [Connect](https://stripe.com/docs/connect)                                                      | <div style="text-align: center;">:heavy_check_mark:</div> |                                                                             |
 | [Issuing](https://stripe.com/docs/issuing)                                                      | <div style="text-align: center;">:x:</div>                |                                                                             |
 | [Terminal](https://stripe.com/docs/terminal)                                                    | <div style="text-align: center;">:x:</div>                |                                                                             |
@@ -74,3 +75,51 @@ module.exports = {
 }
 ```
 If you want more "Pimp my ride" options on this route, look at src/index.js#78
+
+## API
+
+| Action                            | Arguments                                             |
+|-----------------------------------|-------------------------------------------------------|
+| stripe.accounts.create            |                                                       |
+| stripe.accounts.del               | id                                                    |
+| stripe.accounts.list              |                                                       |
+| stripe.accounts.retrieve          | id                                                    |
+| stripe.accounts.update            | id, account                                           |
+| stripe.charges.create             |                                                       |
+| stripe.charges.del                | id                                                    |
+| stripe.charges.list               |                                                       |
+| stripe.charges.retrieve           | id                                                    |
+| stripe.charges.update             | id, charge                                            |
+| stripe.checkout.sessions.create   |                                                       |
+| stripe.checkout.sessions.del      | id                                                    |
+| stripe.checkout.sessions.list     |                                                       |
+| stripe.checkout.sessions.retrieve | id                                                    |
+| stripe.checkout.sessions.update   | id, session                                           |
+| stripe.customers.create           |                                                       |
+| stripe.customers.del              | id                                                    |
+| stripe.customers.list             |                                                       |
+| stripe.customers.retrieve         | id                                                    |
+| stripe.customers.update           | id, customer                                          |
+| stripe.payment.intents.create     |                                                       |
+| stripe.payment.intents.del        | id                                                    |
+| stripe.payment.intents.list       |                                                       |
+| stripe.payment.intents.retrieve   | id                                                    |
+| stripe.payment.intents.update     | id, intent                                            |
+| stripe.products.create            |                                                       |
+| stripe.products.del               | id                                                    |
+| stripe.products.list              |                                                       |
+| stripe.products.retrieve          | id                                                    |
+| stripe.products.update            | id, product                                           |
+| stripe.refunds.create             |                                                       |
+| stripe.refunds.list               |                                                       |
+| stripe.refunds.retrieve           | id                                                    |
+| stripe.refunds.update             | id, refund                                            |
+| stripe.skus.create                |                                                       |
+| stripe.skus.del                   | id                                                    |
+| stripe.skus.list                  |                                                       |
+| stripe.skus.retrieve              | id                                                    |
+| stripe.skus.update                | id, sku                                               |
+| stripe.tax.rates.create           |                                                       |
+| stripe.tax.rates.list             |                                                       |
+| stripe.tax.rates.retrieve         | id                                                    |
+| stripe.tax.rates.update           | id, rate                                              |

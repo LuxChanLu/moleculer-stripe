@@ -10,6 +10,8 @@ const { MoleculerError } 	= require('moleculer').Errors
 const Validator = require('fastest-validator')
 const Stripe = require('stripe')
 
+const { CRUDL } = require('./utils.js')
+
 const Webhook = require('./webhook.js')
 const Connect = require('./connect.js')
 
@@ -17,6 +19,7 @@ const PaymentCheckout = require('./payments/checkout.js')
 const PaymentIntents = require('./payments/intents.js')
 
 const StripeCheck = (new Validator()).compile({
+  version: { type: 'string', optional: true },
   secret: 'string',
   public: 'string',
   webhook: {
@@ -28,13 +31,26 @@ const StripeCheck = (new Validator()).compile({
     },
     optional: true
   },
+  account: { type: 'string', optional: true },
   custom: { type: 'function', optional: true }
 })
 
 module.exports = {
-  mixins: [Webhook, Connect, PaymentCheckout, PaymentIntents],
+  mixins: [
+    CRUDL('customer'),
+    CRUDL('charge'),
+    CRUDL('checkout.session'),
+    CRUDL('paymentIntent'),
+    CRUDL('account'),
+    CRUDL('refund', { del: false }),
+    CRUDL('product'),
+    CRUDL('taxRate', { del: false }),
+    CRUDL('sku'),
+    Webhook, Connect, PaymentCheckout, PaymentIntents
+  ],
   settings: {
     stripe: {
+      version: undefined,
       secret: undefined,
       public: undefined,
       webhook: {
@@ -43,13 +59,12 @@ module.exports = {
         event: undefined
       },
       telemetry: true,
+      account: undefined,
       custom: undefined
     }
   },
   hooks: {
-    before: {
-      '*': 'stripe'
-    }
+    before: { '*': 'stripe' }
   },
   methods: {
     config(ctx = {}) {
@@ -62,9 +77,12 @@ module.exports = {
       throw new MoleculerError('Stripe unrecognized configuration', validate)
     },
     stripe(ctx = {}) {
-      const { secret, telemetry, custom } = this.config(ctx)
-      ctx.stripe = Stripe(secret)
+      const { version, secret, telemetry, account, custom } = this.config(ctx)
+      ctx.stripe = Stripe(secret, { stripeAccount: account })
       ctx.stripe.setTelemetryEnabled(telemetry)
+      if (version) {
+        ctx.stripe.setApiVersion(version)
+      }
       if (custom) {
         ctx.stripe = custom(ctx.stripe) || ctx.stripe
       }

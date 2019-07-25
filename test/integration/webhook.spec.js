@@ -24,6 +24,7 @@ describe('Webhooks - Integration', () => {
   afterAll(() => broker.stop())
 
   it('should work with moleculer-web', async () => {
+    stripeService.mockWebhookHandler()
     const url = `http://127.0.0.1:${webService.settings.port}/stripe`
     const valid = await Request.post({ url, headers: { 'Stripe-Signature': signature, 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })
     expect(valid.statusCode).toBe(200)
