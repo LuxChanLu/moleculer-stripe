@@ -37,7 +37,7 @@ module.exports = {
     StripeMethods('balanceTransactions', { create: false, update: false, del: false }),
     StripeMethods('customer'),
     StripeMethods('charge'),
-    StripeMethods('checkout.session', {}, false, /* istanbul ignore next */ ({ checkout }) => checkout.session),
+    StripeMethods('checkout.session', {}, false, /* istanbul ignore next */ ({ checkout }) => checkout.sessions),
     StripeMethods('paymentIntent', { del: false, confirm: true, capture: true, cancel: true }),
     StripeMethods('setupIntent', { del: false, confirm: true, cancel: true }),
     StripeMethods('payout', { del: false, cancel: true }),
