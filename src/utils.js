@@ -13,7 +13,7 @@ const UUIDV4 = require('uuid/v4')
 const StripeMethods = { create: true, retrieve: true, update: true, del: true, list: true, confirm: false, capture: false, cancel: false, reject: false }
 
 module.exports = {
-  StripeMethods(stripeResource, options = StripeMethods, single = false) {
+  StripeMethods(stripeResource, options = StripeMethods, single = false, accessResource) {
     options = { ...StripeMethods, ...options }
 
     // Trying to normalize these !#*@$# stripe resource name
@@ -22,42 +22,44 @@ module.exports = {
     const plural = Pluralize(resource)
     const name = ((resource.match(/\.[^.]*$/) || [])[0] || resource).replace('.', '')
 
+    accessResource = accessResource || (stripe => stripe[stripeResourcePlural])
+
     const actions = {
       create: {
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].create(params, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).create(params, module.exports.extra(meta))
       },
       retrieve: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].retrieve(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).retrieve(params.id, module.exports.extra(meta))
       },
       update: {
         params: { id: 'string', [name]: 'object' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].update(params.id, params[name], module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).update(params.id, params[name], module.exports.extra(meta))
       },
       del: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].del(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).del(params.id, module.exports.extra(meta))
       },
       confirm: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].confirm(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).confirm(params.id, module.exports.extra(meta))
       },
       capture: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].capture(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).capture(params.id, module.exports.extra(meta))
       },
       cancel: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].cancel(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).cancel(params.id, module.exports.extra(meta))
       },
       reject: {
         params: { id: 'string' },
-        handler: ({ stripe, params, meta }) => stripe[stripeResourcePlural].reject(params.id, module.exports.extra(meta))
+        handler: ({ stripe, params, meta }) => accessResource(stripe).reject(params.id, module.exports.extra(meta))
       },
       list: {
         handler: (ctx) => {
           const { stripe, params, meta } = ctx
-          const list = stripe[stripeResourcePlural].list(params, module.exports.extra(meta))
+          const list = accessResource(stripe).list(params, module.exports.extra(meta))
           if (meta.pagination) {
             if (!isNaN(meta.pagination)) {
               return list.autoPagingToArray({ limit: meta.pagination })

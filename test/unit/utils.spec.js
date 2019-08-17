@@ -18,6 +18,8 @@ describe('Utils', () => {
   afterAll(() => broker.stop())
 
   it('should create a mapping', async () => {
+    await broker.call('utils.checkout.sessions.create', {})
+
     await broker.call('utils.customers.create', { email: 'customer@test.eu' })
     await broker.call('utils.customers.retrieve', { id: 'cus_test' })
     await broker.call('utils.customers.confirm', { id: 'cus_test' })
@@ -30,6 +32,9 @@ describe('Utils', () => {
     await broker.call('utils.customers.list', { starting_after: 20 }, { meta: { pagination: 10000 } })
     await broker.call('utils.customers.list', { starting_after: 30 }, { meta: { pagination: 'utils.each.customers' } })
     await broker.call('utils.customers.list', { starting_after: 40 }, { meta: { pagination: {} } })
+
+    expect(service.stripe.checkout.session.create).toHaveBeenCalledTimes(1)
+    expect(service.stripe.checkout.session.create).toHaveBeenCalledWith({ }, { idempotency_key: expect.anything() })
 
     expect(service.stripe.customers.create).toHaveBeenCalledTimes(1)
     expect(service.stripe.customers.create).toHaveBeenCalledWith({ email: 'customer@test.eu' }, { idempotency_key: expect.anything() })
