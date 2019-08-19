@@ -133,7 +133,7 @@ module.exports = {
   name: 'web',
   mixins: [MoleculerWeb],
   settings: {
-    routes: [StripeRoute('/webhook/stripe', 'my.stripe.service'), StripeRoute('/webhook/stripe/connect', 'my.stripe.service', true)]
+    routes: [StripeRoute('/webhook/stripe/plateform', 'my.stripe.service'), StripeRoute('/webhook/stripe/connect', 'my.stripe.service', true)]
   }
 }
 ```
