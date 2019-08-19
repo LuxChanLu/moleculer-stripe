@@ -14,7 +14,7 @@ module.exports = {
     stripe: {
       secret: 'sk_secretkey',
       webhook: {
-        plateform: {
+        platform: {
           key: 'whsec_sigkey',
           action: 'stripe.webhook.action',
           event: 'stripe.webhook.event'

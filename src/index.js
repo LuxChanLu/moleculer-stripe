@@ -33,7 +33,7 @@ const StripeCheck = (new Validator()).compile({
   webhook: {
     type: 'object',
     items: {
-      plateform: WebhookCheck,
+      platform: WebhookCheck,
       connect: WebhookCheck
     },
     optional: true
@@ -70,7 +70,7 @@ module.exports = {
       version: undefined,
       secret: undefined,
       webhook: {
-        plateform: {
+        platform: {
           key: undefined,
           action: undefined,
           event: undefined

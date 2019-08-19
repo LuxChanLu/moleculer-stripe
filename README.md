@@ -45,7 +45,7 @@ module.exports = {
       /* Before using webhook look in the README how to integrate it */
       webhook: {
         /** @type {Object?} Platefrom webhook (Default webhooks) */
-        plateform: {
+        platform: {
           /** @type {String} Webhook signing from Stripe dashboard. */
           key: 'whsec_',
           /** @type {String?} Which action will be call when a webhook is received */
@@ -133,7 +133,7 @@ module.exports = {
   name: 'web',
   mixins: [MoleculerWeb],
   settings: {
-    routes: [StripeRoute('/webhook/stripe/plateform', 'my.stripe.service'), StripeRoute('/webhook/stripe/connect', 'my.stripe.service', true)]
+    routes: [StripeRoute('/webhook/stripe/platform', 'my.stripe.service'), StripeRoute('/webhook/stripe/connect', 'my.stripe.service', true)]
   }
 }
 ```

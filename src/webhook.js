@@ -14,7 +14,7 @@ module.exports = {
         const { body, signature, connect } = ctx.params
         try {
           const { webhook } = this.config(ctx)
-          const { key, action, event } = connect ? webhook.connect : webhook.plateform
+          const { key, action, event } = connect ? webhook.connect : webhook.platform
           ctx.meta.connect = connect
           const stripeEvent = ctx.stripe.webhooks.constructEvent(body, signature, key)
           if (action) {

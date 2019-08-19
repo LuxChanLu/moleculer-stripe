@@ -18,7 +18,7 @@ describe('Webhooks - Unit', () => {
   const stripeEvent = { id: 'evt_idevt', type: 'test', object: 'event' }
   const event = JSON.stringify(stripeEvent, null, 2)
   const signatures = [
-    stripe.webhooks.generateTestHeaderString({ payload: event, secret: service.settings.stripe.webhook.plateform.key }),
+    stripe.webhooks.generateTestHeaderString({ payload: event, secret: service.settings.stripe.webhook.platform.key }),
     stripe.webhooks.generateTestHeaderString({ payload: event, secret: 'whsec_sigonfly' }),
     stripe.webhooks.generateTestHeaderString({ payload: event, secret: service.settings.stripe.webhook.connect.key }),
   ]
@@ -29,7 +29,7 @@ describe('Webhooks - Unit', () => {
   it('should validate signature', async () => {
     service.mockWebhookHandler()
     await expect(broker.call('stripe.webhook', { body: event, signature: signatures[0], connect: false })).resolves.toEqual({ received: true })
-    await expect(broker.call('stripe.webhook', { body: event, signature: signatures[1], connect: false }, { meta: { stripe: { webhook: { plateform: { key: 'whsec_sigonfly' } } } } })).resolves.toEqual({ received: true })
+    await expect(broker.call('stripe.webhook', { body: event, signature: signatures[1], connect: false }, { meta: { stripe: { webhook: { platform: { key: 'whsec_sigonfly' } } } } })).resolves.toEqual({ received: true })
     expect(service.webhook.action).toHaveBeenCalledTimes(2)
     expect(service.webhook.action).toHaveBeenCalledWith(stripeEvent)
     expect(service.webhook.event).toHaveBeenCalledTimes(2)
