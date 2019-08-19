@@ -6,6 +6,7 @@
 
 'use strict'
 
+const DeepMerge = require('deepmerge')
 const { MoleculerError } 	= require('moleculer').Errors
 const Validator = require('fastest-validator')
 const Stripe = require('stripe')
@@ -15,15 +16,25 @@ const { StripeMethods } = require('./utils.js')
 const Webhook = require('./webhook.js')
 const Connect = require('./connect.js')
 
+const WebhookCheck = {
+  type: 'object',
+  items: {
+    key: 'string',
+    connect: { type: 'string', optional: true },
+    action: { type: 'string', optional: true },
+    event: { type: 'string', optional: true }
+  },
+  optional: true
+}
+
 const StripeCheck = (new Validator()).compile({
   version: { type: 'string', optional: true },
   secret: 'string',
   webhook: {
     type: 'object',
     items: {
-      key: 'string',
-      action: { type: 'string', optional: true },
-      event: { type: 'string', optional: true }
+      plateform: WebhookCheck,
+      connect: WebhookCheck
     },
     optional: true
   },
@@ -59,9 +70,16 @@ module.exports = {
       version: undefined,
       secret: undefined,
       webhook: {
-        key: undefined,
-        action: undefined,
-        event: undefined
+        plateform: {
+          key: undefined,
+          action: undefined,
+          event: undefined
+        },
+        connect: {
+          key: undefined,
+          action: undefined,
+          event: undefined
+        }
       },
       telemetry: true,
       custom: undefined
@@ -73,7 +91,7 @@ module.exports = {
   methods: {
     config(ctx = {}) {
       const meta = (ctx.meta || {}).stripe || {}
-      const config = { ...this.settings.stripe, ...meta, webhook: { ...this.settings.stripe.webhook, ...(meta.webhook || {}) } }
+      const config = DeepMerge.all([this.settings.stripe, meta])
       const validate = StripeCheck(config)
       if (validate === true) {
         return config
@@ -97,11 +115,14 @@ module.exports = {
     req.$params.signature = req.headers['stripe-signature']
     req.$params.body = req.body
   },
-  StripeRoute(path = 'stripe', service = 'stripe') {
+  StripeRoute(path = 'stripe', service = 'stripe', connect = false) {
     return {
       bodyParsers: { json: false, text: { type: 'application/json' } },
       aliases: { [`POST ${path}`]: `${service}.webhook` },
-      onBeforeCall: module.exports.StripeDecorator
+      onBeforeCall: (_, _1, req) => {
+        req.$params.connect = connect
+        module.exports.StripeDecorator(_, _1, req)
+      }
     }
   }
 }

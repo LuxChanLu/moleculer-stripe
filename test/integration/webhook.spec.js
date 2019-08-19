@@ -18,16 +18,19 @@ describe('Webhooks - Integration', () => {
   const stripe = stripeService.stripe()
   const webService = broker.createService(WebService)
   const event = JSON.stringify({ id: 'evt_idevt_from_web', type: 'test_web', object: 'event' }, null, 2)
-  const signature = stripe.webhooks.generateTestHeaderString({ payload: event, secret: stripeService.settings.stripe.webhook.key })
+  const signatures = {
+    plateform: stripe.webhooks.generateTestHeaderString({ payload: event, secret: stripeService.settings.stripe.webhook.plateform.key }),
+    connect: stripe.webhooks.generateTestHeaderString({ payload: event, secret: stripeService.settings.stripe.webhook.connect.key }),
+  }
 
   beforeAll(() => broker.start())
   afterAll(() => broker.stop())
 
   it('should work with moleculer-web', async () => {
     stripeService.mockWebhookHandler()
-    const url = `http://127.0.0.1:${webService.settings.port}/stripe`
-    const valid = await Request.post({ url, headers: { 'Stripe-Signature': signature, 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })
-    expect(valid.statusCode).toBe(200)
-    await expect(Request.post({ url, headers: { 'Stripe-Signature': 'wrong', 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })).rejects.toMatchObject({ statusCode: 400 })
+    const base = `http://127.0.0.1:${webService.settings.port}`
+    await expect(Request.post({ url: `${base}/stripe`, headers: { 'Stripe-Signature': signatures.plateform, 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })).resolves.toMatchObject({ statusCode: 200 })
+    await expect(Request.post({ url: `${base}/stripe/connect`, headers: { 'Stripe-Signature': signatures.connect, 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })).resolves.toMatchObject({ statusCode: 200 })
+    await expect(Request.post({ url: `${base}/stripe`, headers: { 'Stripe-Signature': 'wrong', 'Content-Type': 'application/json' }, body: event, resolveWithFullResponse: true })).rejects.toMatchObject({ statusCode: 400 })
   })
 })

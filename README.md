@@ -44,12 +44,24 @@ module.exports = {
       secret: 'pk_',
       /* Before using webhook look in the README how to integrate it */
       webhook: {
-        /** @type {String} Webhook signing from Stripe dashboard. */
-        key: 'whsec_',
-        /** @type {String?} Which action will be call when a webhook is received */
-        action: undefined,
-        /** @type {String?} Which event will be emitted when a webhook is received */
-        event: undefined
+        /** @type {Object?} Platefrom webhook (Default webhooks) */
+        plateform: {
+          /** @type {String} Webhook signing from Stripe dashboard. */
+          key: 'whsec_',
+          /** @type {String?} Which action will be call when a webhook is received */
+          action: undefined,
+          /** @type {String?} Which event will be emitted when a webhook is received */
+          event: undefined
+        },
+        /** @type {Object?} Connect webhook (Only if you use connect) */
+        connect: {
+          /** @type {String} Webhook signing from Stripe dashboard. */
+          key: 'whsec_',
+          /** @type {String?} Which action will be call when a webhook is received */
+          action: undefined,
+          /** @type {String?} Which event will be emitted when a webhook is received */
+          event: undefined
+        }
       },
       /** @type {String?} Version of this API (Default : latest). */
       version: undefined,
@@ -112,6 +124,19 @@ module.exports = {
   }
 }
 ```
+If you want to use [Connect](https://stripe.com/docs/connect) webhook, just add a third arguement at `true` :
+```js
+const MoleculerWeb = require('moleculer-web')
+const { StripeRoute } = require('moleculer-stripe')
+
+module.exports = {
+  name: 'web',
+  mixins: [MoleculerWeb],
+  settings: {
+    routes: [StripeRoute('/webhook/stripe', 'my.stripe.service'), StripeRoute('/webhook/stripe/connect', 'my.stripe.service', true)]
+  }
+}
+```
 If you want more "Pimp my ride" options on this route, look at src/index.js#78
 ### Integration with any other web gateway
 Declare your stripe service like above :
@@ -129,7 +154,7 @@ Then you need to call a specific action with the body of the webhook (:warning: 
 // Example with express (If you use that, checkout the offical 'moleculer-web')
 // Do your express init things + moleculer init broker
 app.post('/webhook/stripe', bodyParser.raw({ type: 'application/json' }), async (request, response) => {
-  const result = await broker.call('my.stripe.service.webhook', { body: request.body, signature: request.headers['stripe-signature'] })
+  const result = await broker.call('my.stripe.service.webhook', { body: request.body, signature: request.headers['stripe-signature'], connect: false })
   return result ? response.json(result) : response.status(400).end()
 })
 ```
@@ -153,88 +178,88 @@ module.exports = {
 }
 ```
 
-| Action                                   | Arguments                                      |
-|------------------------------------------|------------------------------------------------|
-| stripe.accounts.capabilities.list        | account                                        |
-| stripe.accounts.capabilities.retrieve    | account, id                                    |
-| stripe.accounts.capabilities.update      | account, capability, requested                 |
-| stripe.accounts.create                   |                                                |
-| stripe.accounts.del                      | id                                             |
-| stripe.accounts.list                     |                                                |
-| stripe.accounts.login                    | id                                             |
-| stripe.accounts.reject                   | id                                             |
-| stripe.accounts.retrieve                 | id                                             |
-| stripe.accounts.update                   | id, account                                    |
-| stripe.application.fees.list             |                                                |
-| stripe.application.fees.refunds.create   | fee                                            |
-| stripe.application.fees.refunds.list     | fee                                            |
-| stripe.application.fees.refunds.retrieve | fee, id                                        |
-| stripe.application.fees.refunds.update   | fee, id, refund                                |
-| stripe.application.fees.retrieve         | id                                             |
-| stripe.balance.retrieve                  | id                                             |
-| stripe.balance.transactions.list         |                                                |
-| stripe.balance.transactions.retrieve     | id                                             |
-| stripe.charges.create                    |                                                |
-| stripe.charges.del                       | id                                             |
-| stripe.charges.list                      |                                                |
-| stripe.charges.retrieve                  | id                                             |
-| stripe.charges.update                    | id, charge                                     |
-| stripe.checkout.sessions.create          |                                                |
-| stripe.checkout.sessions.del             | id                                             |
-| stripe.checkout.sessions.list            |                                                |
-| stripe.checkout.sessions.retrieve        | id                                             |
-| stripe.checkout.sessions.update          | id, session                                    |
-| stripe.country.specs.list                |                                                |
-| stripe.country.specs.retrieve            | id                                             |
-| stripe.customers.create                  |                                                |
-| stripe.customers.del                     | id                                             |
-| stripe.customers.list                    |                                                |
-| stripe.customers.retrieve                | id                                             |
-| stripe.customers.update                  | id, customer                                   |
-| stripe.payment.intents.cancel            | id                                             |
-| stripe.payment.intents.capture           | id                                             |
-| stripe.payment.intents.confirm           | id                                             |
-| stripe.payment.intents.create            |                                                |
-| stripe.payment.intents.list              |                                                |
-| stripe.payment.intents.retrieve          | id                                             |
-| stripe.payment.intents.update            | id, intent                                     |
-| stripe.payouts.cancel                    | id                                             |
-| stripe.payouts.create                    |                                                |
-| stripe.payouts.list                      |                                                |
-| stripe.payouts.retrieve                  | id                                             |
-| stripe.payouts.update                    | id, payout                                     |
-| stripe.products.create                   |                                                |
-| stripe.products.del                      | id                                             |
-| stripe.products.list                     |                                                |
-| stripe.products.retrieve                 | id                                             |
-| stripe.products.update                   | id, product                                    |
-| stripe.refunds.create                    |                                                |
-| stripe.refunds.list                      |                                                |
-| stripe.refunds.retrieve                  | id                                             |
-| stripe.refunds.update                    | id, refund                                     |
-| stripe.setup.intents.cancel              | id                                             |
-| stripe.setup.intents.confirm             | id                                             |
-| stripe.setup.intents.create              |                                                |
-| stripe.setup.intents.list                |                                                |
-| stripe.setup.intents.retrieve            | id                                             |
-| stripe.setup.intents.update              | id, intent                                     |
-| stripe.skus.create                       |                                                |
-| stripe.skus.del                          | id                                             |
-| stripe.skus.list                         |                                                |
-| stripe.skus.retrieve                     | id                                             |
-| stripe.skus.update                       | id, sku                                        |
-| stripe.tax.rates.create                  |                                                |
-| stripe.tax.rates.list                    |                                                |
-| stripe.tax.rates.retrieve                | id                                             |
-| stripe.tax.rates.update                  | id, rate                                       |
-| stripe.tokens.create                     |                                                |
-| stripe.tokens.retrieve                   | id                                             |
-| stripe.topups.cancel                     | id                                             |
-| stripe.topups.create                     |                                                |
-| stripe.topups.list                       |                                                |
-| stripe.topups.retrieve                   | id                                             |
-| stripe.topups.update                     | id, topup                                      |
-| stripe.transfers.create                  |                                                |
-| stripe.transfers.list                    |                                                |
-| stripe.transfers.retrieve                | id                                             |
-| stripe.transfers.update                  | id, transfer                                   |
+| Action                            | Arguments                                      |
+|-----------------------------------|------------------------------------------------|
+| accounts.capabilities.list        | account                                        |
+| accounts.capabilities.retrieve    | account, id                                    |
+| accounts.capabilities.update      | account, capability, requested                 |
+| accounts.create                   |                                                |
+| accounts.del                      | id                                             |
+| accounts.list                     |                                                |
+| accounts.login                    | id                                             |
+| accounts.reject                   | id                                             |
+| accounts.retrieve                 | id                                             |
+| accounts.update                   | id, account                                    |
+| application.fees.list             |                                                |
+| application.fees.refunds.create   | fee                                            |
+| application.fees.refunds.list     | fee                                            |
+| application.fees.refunds.retrieve | fee, id                                        |
+| application.fees.refunds.update   | fee, id, refund                                |
+| application.fees.retrieve         | id                                             |
+| balance.retrieve                  | id                                             |
+| balance.transactions.list         |                                                |
+| balance.transactions.retrieve     | id                                             |
+| charges.create                    |                                                |
+| charges.del                       | id                                             |
+| charges.list                      |                                                |
+| charges.retrieve                  | id                                             |
+| charges.update                    | id, charge                                     |
+| checkout.sessions.create          |                                                |
+| checkout.sessions.del             | id                                             |
+| checkout.sessions.list            |                                                |
+| checkout.sessions.retrieve        | id                                             |
+| checkout.sessions.update          | id, session                                    |
+| country.specs.list                |                                                |
+| country.specs.retrieve            | id                                             |
+| customers.create                  |                                                |
+| customers.del                     | id                                             |
+| customers.list                    |                                                |
+| customers.retrieve                | id                                             |
+| customers.update                  | id, customer                                   |
+| payment.intents.cancel            | id                                             |
+| payment.intents.capture           | id                                             |
+| payment.intents.confirm           | id                                             |
+| payment.intents.create            |                                                |
+| payment.intents.list              |                                                |
+| payment.intents.retrieve          | id                                             |
+| payment.intents.update            | id, intent                                     |
+| payouts.cancel                    | id                                             |
+| payouts.create                    |                                                |
+| payouts.list                      |                                                |
+| payouts.retrieve                  | id                                             |
+| payouts.update                    | id, payout                                     |
+| products.create                   |                                                |
+| products.del                      | id                                             |
+| products.list                     |                                                |
+| products.retrieve                 | id                                             |
+| products.update                   | id, product                                    |
+| refunds.create                    |                                                |
+| refunds.list                      |                                                |
+| refunds.retrieve                  | id                                             |
+| refunds.update                    | id, refund                                     |
+| setup.intents.cancel              | id                                             |
+| setup.intents.confirm             | id                                             |
+| setup.intents.create              |                                                |
+| setup.intents.list                |                                                |
+| setup.intents.retrieve            | id                                             |
+| setup.intents.update              | id, intent                                     |
+| skus.create                       |                                                |
+| skus.del                          | id                                             |
+| skus.list                         |                                                |
+| skus.retrieve                     | id                                             |
+| skus.update                       | id, sku                                        |
+| tax.rates.create                  |                                                |
+| tax.rates.list                    |                                                |
+| tax.rates.retrieve                | id                                             |
+| tax.rates.update                  | id, rate                                       |
+| tokens.create                     |                                                |
+| tokens.retrieve                   | id                                             |
+| topups.cancel                     | id                                             |
+| topups.create                     |                                                |
+| topups.list                       |                                                |
+| topups.retrieve                   | id                                             |
+| topups.update                     | id, topup                                      |
+| transfers.create                  |                                                |
+| transfers.list                    |                                                |
+| transfers.retrieve                | id                                             |
+| transfers.update                  | id, transfer                                   |

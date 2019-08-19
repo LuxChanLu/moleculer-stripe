@@ -9,12 +9,13 @@
 module.exports = {
   actions: {
     webhook: {
-      params: { body: 'string', signature: 'string' },
+      params: { body: 'string', signature: 'string', connect: 'boolean' },
       async handler(ctx) {
+        const { body, signature, connect } = ctx.params
         try {
           const { webhook } = this.config(ctx)
-          const { key, action, event } = webhook
-          const { body, signature } = ctx.params
+          const { key, action, event } = connect ? webhook.connect : webhook.plateform
+          ctx.meta.connect = connect
           const stripeEvent = ctx.stripe.webhooks.constructEvent(body, signature, key)
           if (action) {
             await ctx.call(action.replace(/\{type\}/g, stripeEvent.type), stripeEvent)

@@ -14,9 +14,16 @@ module.exports = {
     stripe: {
       secret: 'sk_secretkey',
       webhook: {
-        key: 'whsec_sigkey',
-        action: 'stripe.webhook.action',
-        event: 'stripe.webhook.event'
+        plateform: {
+          key: 'whsec_sigkey',
+          action: 'stripe.webhook.action',
+          event: 'stripe.webhook.event'
+        },
+        connect: {
+          key: 'whsec_sigkeyconnect',
+          action: 'stripe.webhook.action',
+          event: 'stripe.webhook.event'
+        }
       }
     }
   },
@@ -24,7 +31,8 @@ module.exports = {
   actions: {
     'webhook.action'({ params }) {
       this.webhook.action(params)
-    }
+    },
+    'connect': () => true
   },
   events: {
     'stripe.webhook.event'(event) {

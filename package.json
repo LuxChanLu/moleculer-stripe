@@ -39,22 +39,23 @@
   },
   "dependencies": {
     "decamelize": "^3.2.0",
+    "deepmerge": "^4.0.0",
     "fastest-validator": "^0.6.17",
     "pluralize": "^8.0.0",
-    "stripe": "^7.5.0",
+    "stripe": "^7.8.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.15",
+    "@types/jest": "^24.0.17",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "coveralls": "^3.0.5",
-    "eslint": "^6.1.0",
+    "coveralls": "^3.0.6",
+    "eslint": "^6.2.0",
     "moleculer-repl": "^0.5.7",
     "moleculer-web": "^0.8.5",
-    "eslint-plugin-jest": "^22.13.7",
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
+    "eslint-plugin-jest": "^22.15.1",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
     "moleculer": "^0.13.9"
   }
 }
