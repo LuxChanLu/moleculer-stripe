@@ -1,7 +1,5 @@
 # moleculer-stripe
 
-:money_with_wings: Not perfect (yet), be careful before doing some crazy millions :moneybag::moneybag::moneybag: transactions with this :money_with_wings:
-
 [![Build Status](https://travis-ci.org/YourSoftRun/moleculer-stripe.svg?branch=master)](https://travis-ci.org/YourSoftRun/moleculer-stripe)
 [![Coverage Status](https://coveralls.io/repos/github/YourSoftRun/moleculer-stripe/badge.svg?branch=master)](https://coveralls.io/github/YourSoftRun/moleculer-stripe?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9876f0d1a940446cb1aa4531c61d956f)](https://www.codacy.com/app/Hugome/moleculer-stripe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=YourSoftRun/moleculer-stripe&amp;utm_campaign=Badge_Grade)
