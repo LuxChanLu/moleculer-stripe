@@ -5,6 +5,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/222925eedf9c42aaa454b7138d687878)](https://www.codacy.com/gh/LuxChanLu/moleculer-stripe/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=LuxChanLu/moleculer-stripe&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc0acd387a21af63ba39/maintainability)](https://codeclimate.com/github/LuxChanLu/moleculer-stripe/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/github/LuxChanLu/moleculer-stripe/badge.svg)](https://snyk.io/test/github/LuxChanLu/moleculer-stripe)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-stripe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-stripe?ref=badge_shield)
 
 [![Downloads](https://img.shields.io/npm/dm/moleculer-stripe.svg)](https://www.npmjs.com/package/moleculer-stripe)
 
@@ -260,3 +261,7 @@ module.exports = {
 | transfers.list                    |                                                |
 | transfers.retrieve                | id                                             |
 | transfers.update                  | id, transfer                                   |
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-stripe.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-stripe?ref=badge_large)
