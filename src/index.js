@@ -1,6 +1,6 @@
 /*
  * moleculer-stripe
- * Copyright (c) 2019 YourSoft.run (https://github.com/YourSoftRun/moleculer-stripe)
+ * Copyright (c) 2022 LuxChan S.A R.L.-S (https://github.com/LuxChanLu/moleculer-stripe)
  * MIT Licensed
  */
 
@@ -100,11 +100,7 @@ module.exports = {
     },
     stripe(ctx = {}) {
       const { version, secret, telemetry, custom } = this.config(ctx)
-      ctx.stripe = Stripe(secret)
-      ctx.stripe.setTelemetryEnabled(telemetry)
-      if (version) {
-        ctx.stripe.setApiVersion(version)
-      }
+      ctx.stripe = Stripe(secret, { apiVersion: version, telemetry })
       if (custom) {
         ctx.stripe = custom(ctx.stripe) || ctx.stripe
       }

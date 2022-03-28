@@ -1,6 +1,6 @@
 /*
  * moleculer-stripe
- * Copyright (c) 2019 YourSoft.run (https://github.com/YourSoftRun/moleculer-stripe)
+ * Copyright (c) 2022 LuxChan S.A R.L.-S (https://github.com/LuxChanLu/moleculer-stripe)
  * MIT Licensed
  */
 

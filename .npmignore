@@ -1,7 +1,7 @@
 .codeclimate.yml
 .editorconfig
 .eslintrc.js
-.travis.yml
+.github/
 test/
 
 .vs

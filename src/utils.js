@@ -1,6 +1,6 @@
 /*
  * moleculer-stripe
- * Copyright (c) 2019 YourSoft.run (https://github.com/YourSoftRun/moleculer-stripe)
+ * Copyright (c) 2022 LuxChan S.A R.L.-S (https://github.com/LuxChanLu/moleculer-stripe)
  * MIT Licensed
  */
 
@@ -8,7 +8,7 @@
 
 const Pluralize = require('pluralize')
 const Decamelize = require('decamelize')
-const UUIDV4 = require('uuid/v4')
+const { v4: UUIDV4 } = require('uuid')
 
 const StripeMethods = { create: true, retrieve: true, update: true, del: true, list: true, confirm: false, capture: false, cancel: false, reject: false }
 
