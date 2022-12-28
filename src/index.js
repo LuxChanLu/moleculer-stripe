@@ -113,8 +113,9 @@ module.exports = {
   },
   StripeRoute(path = 'stripe', service = 'stripe', connect = false) {
     return {
+      path,
       bodyParsers: { json: false, text: { type: 'application/json' } },
-      aliases: { [`POST ${path}`]: `${service}.webhook` },
+      aliases: { [`POST /`]: `${service}.webhook` },
       onBeforeCall: (_, _1, req) => {
         req.$params.connect = connect
         module.exports.StripeDecorator(_, _1, req)

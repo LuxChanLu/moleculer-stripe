@@ -13,6 +13,6 @@ module.exports = {
   mixins: [MoleculerWeb],
 
   settings: {
-    routes: [StripeRoute(), StripeRoute('stripe/connect', 'stripe.connect', true)]
+    routes: [StripeRoute(), StripeRoute('stripe/connect', 'stripe', true)]
   }
 }

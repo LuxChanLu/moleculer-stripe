@@ -33,10 +33,10 @@ describe('Stripe configurations', () => {
   })
 
   it('should config stripe with custom options', async () => {
-    service.settings.stripe.custom = stripe => stripe.setTimeout(50000)
+    service.settings.stripe.custom = _ => ({ opt: 42 })
     const stripe = service.stripe()
     expect(stripe).toBeDefined()
-    expect(stripe._api.timeout).toBe(50000)
+    expect(stripe.opt).toBe(42)
   })
 
 })

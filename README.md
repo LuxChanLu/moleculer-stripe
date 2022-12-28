@@ -1,13 +1,13 @@
 # moleculer-stripe
 
-[![Build](https://github.com/LuxChanLu/moleculer-stripe/actions/workflows/build.yaml/badge.svg)](https://github.com/LuxChanLu/moleculer-stripe/actions/workflows/build.yaml)
+[![Build](https://github.com/LuxChanLu/moleculer-stripe/actions/workflows/test.yml/badge.svg)](https://github.com/LuxChanLu/moleculer-stripe/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/LuxChanLu/moleculer-stripe/badge.svg?branch=master)](https://coveralls.io/github/LuxChanLu/moleculer-stripe?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/222925eedf9c42aaa454b7138d687878)](https://www.codacy.com/gh/LuxChanLu/moleculer-stripe/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=LuxChanLu/moleculer-stripe&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc0acd387a21af63ba39/maintainability)](https://codeclimate.com/github/LuxChanLu/moleculer-stripe/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/github/LuxChanLu/moleculer-stripe/badge.svg)](https://snyk.io/test/github/LuxChanLu/moleculer-stripe)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/moleculer-stripe)
 [![Downloads](https://img.shields.io/npm/dm/moleculer-stripe.svg)](https://www.npmjs.com/package/moleculer-stripe)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-sentry.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FLuxChanLu%2Fmoleculer-sentry?ref=badge_shield)
-
 
 ## Stripe product available in this service
 

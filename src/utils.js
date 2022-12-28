@@ -7,7 +7,7 @@
 'use strict'
 
 const Pluralize = require('pluralize')
-const Decamelize = require('decamelize')
+const ChangeCase = require('change-case')
 const { v4: UUIDV4 } = require('uuid')
 
 const StripeMethods = { create: true, retrieve: true, update: true, del: true, list: true, confirm: false, capture: false, cancel: false, reject: false }
@@ -17,7 +17,7 @@ module.exports = {
     options = { ...StripeMethods, ...options }
 
     // Trying to normalize these !#*@$# stripe resource name
-    const resource = Decamelize(stripeResource, '.')
+    const resource = ChangeCase.snakeCase(stripeResource, { delimiter: '.' })
     const stripeResourcePlural = Pluralize(stripeResource)
     const plural = Pluralize(resource)
     const name = ((resource.match(/\.[^.]*$/) || [])[0] || resource).replace('.', '')
